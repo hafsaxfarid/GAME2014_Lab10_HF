@@ -18,6 +18,10 @@ public class EnemyController : MonoBehaviour
     [Header("Animation")]
     public Animator animatorController;
 
+    [Header("Enemy Explode")]
+    public ParticleSystem opossumSense;
+    public Color opossumSenseColor;
+
     private Rigidbody2D enemyRB;
 
     void Start()
@@ -25,6 +29,7 @@ public class EnemyController : MonoBehaviour
         enemyRB = GetComponent<Rigidbody2D>();
         enemyLOS = GetComponent<LOS>();
         animatorController = GetComponent<Animator>();
+        opossumSense = GetComponentInChildren<ParticleSystem>();
     }
 
     void FixedUpdate()
@@ -118,6 +123,14 @@ public class EnemyController : MonoBehaviour
         transform.localScale = new Vector3(transform.localScale.x * -1.0f, transform.localScale.y, transform.localScale.z);
     }
 
+    public void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            OpossumSense();
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Platform"))
@@ -132,6 +145,12 @@ public class EnemyController : MonoBehaviour
         {
             transform.SetParent(null);
         }
+    }
+
+    private void OpossumSense()
+    {
+        opossumSense.GetComponent<Renderer>().material.SetColor("_Color", opossumSenseColor);
+        opossumSense.Play();
     }
 
     private void OnDrawGizmos()
