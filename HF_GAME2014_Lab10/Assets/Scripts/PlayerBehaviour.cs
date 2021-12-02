@@ -29,6 +29,10 @@ public class PlayerBehaviour : MonoBehaviour
     [Header("Audio FX")]
     public AudioSource jumpSound;
 
+    [Header("Dust Trail")]
+    public ParticleSystem dustTrail;
+    public Color dustTrailColor;
+
     private Rigidbody2D playerRB;
     private Animator playerAnimationController;
     private string animationState = "AnimationState";
@@ -38,6 +42,7 @@ public class PlayerBehaviour : MonoBehaviour
         playerRB = GetComponent<Rigidbody2D>();
         playerAnimationController = GetComponent<Animator>();
         jumpSound = GetComponent<AudioSource>();
+        dustTrail = GetComponentInChildren<ParticleSystem>();
     }
 
     void FixedUpdate()
@@ -57,7 +62,7 @@ public class PlayerBehaviour : MonoBehaviour
             float y = (Input.GetAxisRaw("Vertical") + joystick.Vertical) * sensitivity;
             float jump = Input.GetAxisRaw("Jump") + ((UIController.jumpButtonDown) ? 1.0f : 0.0f);
 
-            if(jump > 0)
+            if (jump > 0)
             {
                 jumpSound.Play();
             }
@@ -65,8 +70,9 @@ public class PlayerBehaviour : MonoBehaviour
             if (x != 0)
             {
                 x = FlipAnimation(x);
-                playerAnimationController.SetInteger(animationState, (int) PlayerAnimationState.RUN); // run state
+                playerAnimationController.SetInteger(animationState, (int)PlayerAnimationState.RUN); // run state
                 state = PlayerAnimationState.RUN;
+                CreateTrail();
             }
             else
             {
@@ -84,7 +90,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
         else
         {
-            playerAnimationController.SetInteger(animationState, (int) PlayerAnimationState.JUMP); // jump state
+            playerAnimationController.SetInteger(animationState, (int)PlayerAnimationState.JUMP); // jump state
             state = PlayerAnimationState.JUMP;
 
             if (x != 0)
@@ -96,19 +102,16 @@ public class PlayerBehaviour : MonoBehaviour
 
                 playerRB.AddForce(new Vector2(horizontalMoveForce, 0.0f) * mass);
             }
+            CreateTrail();
         }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if(other.gameObject.CompareTag("Platform"))
+        if (other.gameObject.CompareTag("Platform"))
         {
             transform.SetParent(other.transform);
         }
-        //else if (other.gameObject.CompareTag("Enemy"))
-        //{
-        //    transform.position = spawnPoint.position;
-        //}
     }
 
     private void OnCollisionExit2D(Collision2D other)
@@ -139,8 +142,14 @@ public class PlayerBehaviour : MonoBehaviour
     {
         x = (x > 0) ? 1 : -1;
 
-        transform.localScale = new Vector2 (x, 1.0f);
+        transform.localScale = new Vector2(x, 1.0f);
         return x;
+    }
+
+    public void CreateTrail()
+    {
+        dustTrail.GetComponent<Renderer>().material.SetColor("_Color", dustTrailColor);
+        dustTrail.Play();
     }
 
     private void OnDrawGizmos()
