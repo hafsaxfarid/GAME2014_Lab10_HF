@@ -2,8 +2,8 @@
     "m_SelectedDeviceId": "emulator-5554",
     "m_SelectedPackage": {
         "deviceId": "emulator-5554",
-        "name": "ca.hxf.HF_GAME2014_Lab8",
-        "processId": 2694,
+        "name": "ca.hxf.HF_GAME2014_Lab10",
+        "processId": 3854,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -24,6 +24,24 @@
             "deviceId": "emulator-5554",
             "name": "ca.hxf.HF_GAME2014_Lab8",
             "processId": 2694,
+            "exited": false
+        },
+        {
+            "deviceId": "emulator-5554",
+            "name": "ca.hxf.HF_GAME2014_Lab10",
+            "processId": 3256,
+            "exited": false
+        },
+        {
+            "deviceId": "emulator-5554",
+            "name": "ca.hxf.HF_GAME2014_Lab10",
+            "processId": 3568,
+            "exited": false
+        },
+        {
+            "deviceId": "emulator-5554",
+            "name": "ca.hxf.HF_GAME2014_Lab10",
+            "processId": 3854,
             "exited": false
         }
     ],
